@@ -8,8 +8,8 @@ class Field:
     def __str__(self):
         return str(self.value)
     
-    def validate(self):
-        if not (self.value.isdigit()) or len(self.value) != 10:
+    def validate(self, value):
+        if not value.isdigit() or len(value) != 10:
             raise ValueError
 
 
@@ -21,10 +21,10 @@ class Name(Field):
 class Phone(Field):
     # реалізація класу
     def __init__(self, value):
+        self.validate(value)
         super().__init__(value)
-        self.validate()
-
-
+        
+        
 class Record:
     def __init__(self, name):
         self.name = Name(name)
@@ -42,9 +42,10 @@ class Record:
                 self.phones.remove(i)
 
     def edit_phone(self, phone: str, new_phone):
+        new_phone = Phone(new_phone)
         for i in self.phones:
             if i.value == phone:
-                i.value = new_phone
+                i.value = new_phone.value
                 return          
         raise ValueError
                 
